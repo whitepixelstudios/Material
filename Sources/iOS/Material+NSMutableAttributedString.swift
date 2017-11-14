@@ -30,18 +30,37 @@
 
 import UIKit
 
-extension UIFont {
-	/**
-     Calculates a CGSize value based on a width and length of a string with a
-     given UIFont.
-     - Parameter string: A String.
-     - Parameter constrainedTo width: A CGFloat.
-     - Returns a CGSize.
+extension NSMutableAttributedString {
+    /**
+     Updates a NSAttributedStringKey for a given range.
+     - Parameter _ name: A NSAttributedStringKey.
+     - Parameter value: Any type.
+     - Parameter range: A NSRange.
      */
-    open func stringSize(string: String, constrainedTo width: CGFloat) -> CGSize {
-		return string.boundingRect(with: CGSize(width: width, height: CGFloat(Double.greatestFiniteMagnitude)),
-			options: .usesLineFragmentOrigin,
-			attributes: [.font: self],
-			context: nil).size
-	}
+    open func updateAttribute(_ name: NSAttributedStringKey, value: Any, range: NSRange) {
+        removeAttribute(name, range: range)
+        addAttribute(name, value: value, range: range)
+    }
+    
+    /**
+     Updates a Dictionary of NSAttributedStringKeys for a given range.
+     - Parameter _ attrs: A Dictionary of NSAttributedStringKey type keys and Any type values.
+     - Parameter range: A NSRange.
+     */
+    open func updateAttributes(_ attrs: [NSAttributedStringKey: Any], range: NSRange) {
+        for (k, v) in attrs {
+            updateAttribute(k, value: v, range: range)
+        }
+    }
+    
+    /**
+     Removes a Dictionary of NSAttributedStringKeys for a given range.
+     - Parameter _ attrs: An Array of attributedStringKeys.
+     - Parameter range: A NSRange.
+     */
+    open func removeAttributes(_ attrs: [NSAttributedStringKey], range: NSRange) {
+        for k in attrs {
+            removeAttribute(k, range: range)
+        }
+    }
 }
